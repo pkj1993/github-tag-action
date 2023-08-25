@@ -18,7 +18,7 @@ jobs:
 
       - name: version-tag
         id: tag
-        uses: ./.github/action/github-tag-action
+        uses: ./.github/action
         env:
           GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
           WITH_V: true
