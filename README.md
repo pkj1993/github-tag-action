@@ -1,2 +1,2 @@
 # github-tag-action
-github-tag-action code tag_number:7.3
+github-tag-action code tag_number:7.4
