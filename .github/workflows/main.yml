@@ -8,9 +8,10 @@ on:
 jobs:
   Create-Tag:
     if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    name: Create-Tag
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.Create-Tag.outputs.tag }}
+      version: ${{ steps.Create-Tag.outputs.Create-Tag }}
     permissions:
       contents: write
     steps:
@@ -19,7 +20,7 @@ jobs:
           fetch-depth: '0'
 
       - name: version-tag
-        id: tag
+        id: Create-Tag
         uses: ./.github/action
         env:
           GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
@@ -41,5 +42,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }} 
         with:
-         tag_name: ${{ github.ref }}
-         release_name: ${{ github.ref }}     
+         tag_name: ${{ needs.Create-Tag.outputs.version }}
+         release_name: ${{ needs.Create-Tag.outputs.version }}     
