@@ -6,11 +6,11 @@ on:
       - closed    
 
 jobs:
-  bump-version:
+  Create-Tag:
     if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.bump-version.outputs.tag }}
+      version: ${{ steps.Create-Tag.outputs.tag }}
     permissions:
       contents: write
     steps:
@@ -26,10 +26,10 @@ jobs:
           WITH_V: true
           RELEASE_BRANCHES: master
           
-  create-release:
+  Create-Release:
     name: Create release
     runs-on: ubuntu-latest
-    needs: [bump-version]
+    needs: [Create-Tag]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -41,5 +41,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }} 
         with:
-  
+         tag_name: ${{ github.ref }}
          release_name: ${{ github.ref }}     
