@@ -41,4 +41,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }} 
         with:
+         tag_name: ${{ needs.bump-version.outputs.version }}
          release_name: ${{ needs.bump-version.outputs.version }}     
