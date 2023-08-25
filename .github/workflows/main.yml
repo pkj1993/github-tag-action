@@ -30,6 +30,6 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }} # Tyou do not need to create your own token
-        with:
-          release_name:${{ steps.bump-version.outputs.tag }}  }}
+          GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }} 
+        with: 
+         release_name: ${{ steps.bump-version.outputs.tag }}
