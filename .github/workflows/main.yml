@@ -39,11 +39,10 @@ jobs:
         uses: ./.github/action
         env:
           GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
-          
           WITH_V: true
           RELEASE_BRANCHES: master
         with:
-         tag: ${{ steps.bump_version.outputs.version }}   
+         tag: major  
           
   Create-Release:
     name: Create release
