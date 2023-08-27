@@ -41,7 +41,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
           WITH_V: true
           RELEASE_BRANCHES: master
-          MAJOR_STRING_TOKEN: major
+          MAJOR_STRING_TOKEN: "#major"
         with:
          tag: major  
           
