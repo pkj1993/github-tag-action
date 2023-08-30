@@ -34,6 +34,10 @@ jobs:
           labels=$(jq -r '.pull_request.labels[].name' $GITHUB_EVENT_PATH)
           echo "$labels"
 
+          # Determine version bump type based on labels
+          if echo "$labels" | grep -q 'feat'; then
+            echo "major"
+
       - name: version-tag
         id: Create-Tag
         uses: ./.github/action
