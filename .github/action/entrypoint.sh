@@ -156,7 +156,7 @@ log=${history_type[${branch_history}]}
 printf "History:\n---\n%s\n---\n" "$log"
 
 case "$log" in
-    *$major_string_token* ) new=$(semver -i major "$tag"); part="major";;
+    *$major_string_token* ) new=$(semver -i feat "$tag"); part="major";;
     *$minor_string_token* ) new=$(semver -i minor "$tag"); part="minor";;
     *$patch_string_token* ) new=$(semver -i patch "$tag"); part="patch";;
     *$none_string_token* )
