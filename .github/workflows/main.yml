@@ -19,20 +19,20 @@ jobs:
         with:
           fetch-depth: '0'
 
-      - name: Determine version type
-        id: bump_version
-        run: |
-          major=$(echo ${{ steps.get_version.outputs.version }} | cut -d '.' -f 1)
-          minor=$(echo ${{ steps.get_version.outputs.version }} | cut -d '.' -f 2)
-          patch=$(echo ${{ steps.get_version.outputs.version }} | cut -d '.' -f 3)
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
 
-          if [ -n "$(echo ${{ github.event.pull_request.labels }} | jq 'map(.name) | contains(["major"])')" ]; then
-            echo "::set-output name=version::${major}.0.0"
-          elif [ -n "$(echo ${{ github.event.pull_request.labels }} | jq 'map(.name) | contains(["minor"])')" ]; then
-            echo "::set-output name=version::${major}.$((minor + 1)).0"
-          else
-            echo "::set-output name=version::${major}.${minor}.$((patch + 1))"
-          fi 
+      - name: Install semver CLI
+        run: npm install -g semver
+
+      - name: Get version bump type
+        id: get_version_bump
+        run: |
+          # Extract labels from pull request using jq
+          labels=$(jq -r '.pull_request.labels[].name' $GITHUB_EVENT_PATH)
+          echo $labels
 
       - name: version-tag
         id: Create-Tag
