@@ -32,7 +32,7 @@ jobs:
         run: |
           # Extract labels from pull request using jq
           labels=$(jq -r '.pull_request.labels[].name' $GITHUB_EVENT_PATH)
-          echo "$labels"
+          echo "Labels: $labels"
 
           # Determine version bump type based on labels
           if echo "$labels" | grep -q 'major'; then
