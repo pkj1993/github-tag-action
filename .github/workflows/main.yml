@@ -19,20 +19,34 @@ jobs:
         with:
           fetch-depth: '0'
 
-      - name: Determine version type
-        id: bump_version
-        run: |
-          major=$(echo ${{ steps.get_version.outputs.version }} | cut -d '.' -f 1)
-          minor=$(echo ${{ steps.get_version.outputs.version }} | cut -d '.' -f 2)
-          patch=$(echo ${{ steps.get_version.outputs.version }} | cut -d '.' -f 3)
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
 
-          if [ -n "$(echo ${{ github.event.pull_request.labels }} | jq 'map(.name) | contains(["major"])')" ]; then
-            echo "::set-output name=version::${major}.0.0"
-          elif [ -n "$(echo ${{ github.event.pull_request.labels }} | jq 'map(.name) | contains(["minor"])')" ]; then
-            echo "::set-output name=version::${major}.$((minor + 1)).0"
+      - name: Install semver CLI
+        run: npm install -g semver
+
+      - name: Get version bump type
+        id: get_version_bump
+        run: |
+          # Extract labels from pull request using jq
+          labels=$(jq -r '.pull_request.labels[].name' $GITHUB_EVENT_PATH)
+          echo "Extracted Labels: $labels"
+
+          # Determine version bump type based on labels
+          if echo "$labels" | grep -q 'major'; then
+            echo "major"
+          elif echo "$labels" | grep -q 'minor'; then
+            echo "minor"
+          elif echo "$labels" | grep -q 'patch'; then
+            echo "patch"
           else
-            echo "::set-output name=version::${major}.${minor}.$((patch + 1))"
-          fi 
+            echo "none"
+          fi  
+
+      - name: Print event details
+        run: cat $GITHUB_EVENT_PATH    
 
       - name: version-tag
         id: Create-Tag
@@ -41,6 +55,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
           WITH_V: true
           RELEASE_BRANCHES: master
+          MAJOR_STRING_TOKEN: "major"
+          MINOR_STRING_TOKEN: "#minor"
+          PATCH_STRING_TOKEN: "#patch"
+          NONE_STRING_TOKEN: "#none"
+          DRY_RUN: false
+          PART: ${{ steps.get_version_bump.outputs.stdout }}
           
   Create-Release:
     name: Create release
