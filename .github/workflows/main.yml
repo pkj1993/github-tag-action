@@ -37,6 +37,13 @@ jobs:
           # Determine version bump type based on labels
           if echo "$labels" | grep -q 'feat'; then
             echo "major"
+          elif echo "$labels" | grep -q 'fix'; then
+            echo "minor"
+          elif echo "$labels" | grep -q 'patch'; then
+            echo "patch"
+          else
+            echo "none"
+          fi  
 
       - name: version-tag
         id: Create-Tag
