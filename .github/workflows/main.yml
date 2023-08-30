@@ -45,6 +45,9 @@ jobs:
             echo "none"
           fi  
 
+      - name: Print event details
+        run: cat $GITHUB_EVENT_PATH    
+
       - name: version-tag
         id: Create-Tag
         uses: ./.github/action
