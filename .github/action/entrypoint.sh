@@ -16,8 +16,8 @@ tag_context=${TAG_CONTEXT:-repo}
 prerelease=${PRERELEASE:-false}
 suffix=${PRERELEASE_SUFFIX:-beta}
 verbose=${VERBOSE:-false}
-major_string_token=${MAJOR_STRING_TOKEN:-#feat}
-minor_string_token=${MINOR_STRING_TOKEN:-#fix}
+major_string_token=${MAJOR_STRING_TOKEN:-#major}
+minor_string_token=${MINOR_STRING_TOKEN:-#minor}
 patch_string_token=${PATCH_STRING_TOKEN:-#patch}
 none_string_token=${NONE_STRING_TOKEN:-#none}
 branch_history=${BRANCH_HISTORY:-compare}
@@ -156,7 +156,7 @@ log=${history_type[${branch_history}]}
 printf "History:\n---\n%s\n---\n" "$log"
 
 case "$log" in
-    *$MAJOR_string_token* ) new=$(semver -i major "$tag"); part="major";;
+    *$major_string_token* ) new=$(semver -i major "$tag"); part="major";;
     *$minor_string_token* ) new=$(semver -i minor "$tag"); part="minor";;
     *$patch_string_token* ) new=$(semver -i patch "$tag"); part="patch";;
     *$none_string_token* )
