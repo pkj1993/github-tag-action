@@ -1,4 +1,4 @@
 
 # github-tag-action
-github-tag-action code tag_number:1.7
+github-tag-action code tag_number:4.8
 
