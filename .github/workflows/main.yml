@@ -32,7 +32,7 @@ jobs:
         run: |
           # Extract labels from pull request using jq
           labels=$(jq -r '.pull_request.labels[].name' $GITHUB_EVENT_PATH)
-          echo $labels
+          echo "$labels"
 
       - name: version-tag
         id: Create-Tag
