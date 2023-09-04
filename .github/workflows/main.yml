@@ -49,6 +49,10 @@ jobs:
       - name: Print event details
         run: cat $GITHUB_EVENT_PATH    
 
+      - name: Set custom branch suffix
+        id: set_suffix
+        run: echo "::set-output name=suffix::ppr"  
+
       - name: version-tag
         id: Create-Tag
         uses: ./.github/action
@@ -57,13 +61,8 @@ jobs:
           WITH_V: true
           RELEASE_BRANCHES: master
           PRERELEASE: true
-          suffix: ppr
-          MAJOR_STRING_TOKEN: "major"
-          MINOR_STRING_TOKEN: "#minor"
-          PATCH_STRING_TOKEN: "#fix"
-          NONE_STRING_TOKEN: "#none"
-          DRY_RUN: false
-          PART: ${{ steps.get_version_bump.outputs.stdout }}
+          suffix: ${{ steps.set_suffix.outputs.suffix }}
+          DRY_RUN: true
           
   Create-Release:
     name: Create release
