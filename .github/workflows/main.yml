@@ -51,7 +51,11 @@ jobs:
 
       - name: Set custom branch suffix
         id: set_suffix
-        run: echo "::set-output name=suffix::ppr"  
+        run: echo "::set-output name=suffix::ppr"
+
+      - name: Set MAJOR STRING TOKEN
+        id: set_MAJOR_STRING
+        run: echo "::set-output name=major::major"    
 
       - name: version-tag
         id: Create-Tag
@@ -62,6 +66,7 @@ jobs:
           RELEASE_BRANCHES: master
           PRERELEASE: true
           PRERELEASE_SUFFIX: ${{ steps.set_suffix.outputs.suffix }}
+          MAJOR_STRING_TOKEN: ${{ steps.set_MAJOR_STRING.outputs.major }}
           DRY_RUN: true
           
   Create-Release:
