@@ -61,7 +61,7 @@ jobs:
           WITH_V: true
           RELEASE_BRANCHES: master
           PRERELEASE: true
-          suffix: ${{ steps.set_suffix.outputs.suffix }}
+          PRERELEASE_SUFFIX: ${{ steps.set_suffix.outputs.suffix }}
           DRY_RUN: true
           
   Create-Release:
