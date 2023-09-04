@@ -57,7 +57,7 @@ jobs:
           RELEASE_BRANCHES: master
           MAJOR_STRING_TOKEN: "major"
           MINOR_STRING_TOKEN: "#minor"
-          PATCH_STRING_TOKEN: "#patch"
+          PATCH_STRING_TOKEN: "#fix"
           NONE_STRING_TOKEN: "#none"
           DRY_RUN: false
           PART: ${{ steps.get_version_bump.outputs.stdout }}
