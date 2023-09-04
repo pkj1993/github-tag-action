@@ -158,7 +158,7 @@ printf "History:\n---\n%s\n---\n" "$log"
 case "$log" in
     *$major_string_token* ) new=$(semver -i major "$tag"); part="major";;
     *$minor_string_token* ) new=$(semver -i minor "$tag"); part="minor";;
-    *$patch_string_token* ) new=$(semver -i patch "$tag"); part="patch";;
+    *$patch_string_token* ) new=$(semver -i patch "$tag"); part="fix";;
     *$none_string_token* )
         echo "Default bump was set to none. Skipping..."
         setOutput "old_tag" "$tag"
