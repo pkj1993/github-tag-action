@@ -20,6 +20,22 @@ jobs:
           ref: ${{ github.event.pull_request.merge_commit_sha }}
           fetch-depth: '0'
 
+      - name: Set branch check variable
+        id: branch_check
+        run: |
+          if [ "$GITHUB_REF" == "refs/heads/master" ] || [ "$GITHUB_REF" == "refs/heads/develop" ]; then
+            echo "Branch is master or develop"
+            echo "::set-output name=branch_match::true"
+          else
+            echo "Branch is not master or develop"
+            echo "::set-output name=branch_match::false"
+          fi 
+
+      - name: Display result
+        run: |
+          branch_match="${{ steps.branch_check.outputs.branch_match }}"
+          echo "Branch match: $branch_match"   
+
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
