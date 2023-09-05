@@ -23,8 +23,8 @@ jobs:
       - name: Set branch check variable
         id: branch_check
         run: |
-          if [ "$GITHUB_REF" == "refs/heads/main" ] || [ "$GITHUB_REF" == "refs/heads/*" ]; then
-            echo "Branch is master "
+          if [ "$GITHUB_REF" == "refs/heads/main" ] ; then
+            echo "Branch is main "
             echo "::set-output name=branch_match::false"
           else
             echo "Branch is develop"
