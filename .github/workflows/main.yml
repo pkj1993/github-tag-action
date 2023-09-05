@@ -20,21 +20,20 @@ jobs:
           ref: ${{ github.event.pull_request.merge_commit_sha }}
           fetch-depth: '0'
 
-      - name: Set branch check variable
-        id: branch_check
+      - name: Check if merged into main or master
+        id: check_merge
         run: |
-          if [ "$GITHUB_REF" == "refs/heads/main" ] ; then
-            echo "Branch is main "
-            echo "::set-output name=branch_match::false"
+          if [ "${{ github.event.pull_request.merged }}" == "true" ] &&
+             [ "${{ github.event.pull_request.base.ref }}" == "main" -o "${{ github.event.pull_request.base.ref }}" == "master" ]; then
+            echo "::set-output name=feature_merged::false"
           else
-            echo "Branch is develop"
-            echo "::set-output name=branch_match::true"
-          fi 
+            echo "::set-output name=feature_merged::true"
+          fi  
 
       - name: Display result
         run: |
-          branch_match="${{ steps.branch_check.outputs.branch_match }}"
-          echo "Branch match: $branch_match"   
+          feature_merged="${{ steps.check_merge.outputs.feature_merged }}"
+          echo "Feature branch merged into main or master: $feature_merged"   
 
       - name: Install Node.js
         uses: actions/setup-node@v2
@@ -80,7 +79,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
           WITH_V: true
           RELEASE_BRANCHES: master
-          PRERELEASE: true
+          PRERELEASE: ${{ steps.check_merge.outputs.feature_merged }}
           PRERELEASE_SUFFIX: ${{ steps.set_suffix.outputs.suffix }}
           MAJOR_STRING_TOKEN: ${{ steps.set_MAJOR_STRING.outputs.major }}
           DRY_RUN: true
