@@ -42,27 +42,28 @@ jobs:
 
       - name: Install semver CLI
         run: npm install -g semver
-
-      - name: Get version bump type
-        id: get_version_bump
+ 
+      - name: Extract Labels
+        id: extract-labels
         run: |
-          # Extract labels from pull request using jq
-          labels=$(jq -r '.pull_request.labels[].name' $GITHUB_EVENT_PATH)
-          echo "Extracted Labels: $labels"
+          # Extract the pull request description from the payload
+          description=$(jq -r .pull_request.body $GITHUB_EVENT_PATH)
+          
+          # Define regular expressions to match labels
+          regex="(feat|feature|bugfix)"
 
-          # Determine version bump type based on labels
-          if echo "$labels" | grep -q 'major'; then
-            echo "major"
-          elif echo "$labels" | grep -q 'minor'; then
-            echo "minor"
-          elif echo "$labels" | grep -q 'patch'; then
-            echo "patch"
-          else
-            echo "none"
-          fi  
+          # Extract labels from the description using regex
+          if [[ $description =~ $regex ]]; then
+            labels="${BASH_REMATCH[1]}"
+          fi
 
-      - name: Print event details
-        run: cat $GITHUB_EVENT_PATH    
+          # Set the extracted labels as an output variable
+          echo "::set-output name=labels::$labels"
+
+      - name: Use Extracted Labels
+        run: |
+          extracted_labels="${{ steps.extract-labels.outputs.labels }}"
+          echo "Extracted Labels: $extracted_labels" 
 
       - name: Set custom branch suffix
         id: set_suffix
