@@ -50,7 +50,7 @@ jobs:
           description=$(jq -r .pull_request.body $GITHUB_EVENT_PATH)
           
           # Define regular expressions to match labels
-          regex="(Major|Feature|Bugfix|Refactor|chore)"
+          regex="(Major|Feature|Bugfix|Refactor|chore|Documentation)"
 
           # Extract labels from the description using regex
           if [[ $description =~ $regex ]]; then
